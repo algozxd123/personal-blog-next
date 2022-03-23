@@ -1,15 +1,13 @@
 import type { NextPage } from "next";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import PostProps from "../types/PostProp";
+import { PostProps } from "../types/post";
 
 const Post: NextPage<PostProps> = (props) => {
-
   return (
     <div className="mt-6 bg-[#42414d] border border-solid border-transparent shadow-sm rounded-lg p-5 flex justify-between hover:border-blue-400">
       <div>
         <a href="#">
-          <Image src="/post1.jpg" alt="Logo" width={125} height={125} layout="fixed" />
+          <Image src={props.img} alt="Logo" width={125} height={125} layout="fixed" />
         </a>
       </div>
       <div className="ml-5 flex flex-col justify-between">
@@ -19,7 +17,7 @@ const Post: NextPage<PostProps> = (props) => {
           </a>
 
           <a href="#" className="hover:underline">
-            <p className="line-clamp-3">
+            <p className="line-clamp-3 text-ellipsis">
               {props.description}
             </p>
           </a>
