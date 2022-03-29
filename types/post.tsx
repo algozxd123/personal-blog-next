@@ -2,7 +2,8 @@ export type PostProps = {
   title: string,
   description: string,
   img: string,
-  date: string
+  date: string,
+  slug: string
 };
 
 export type StrapiPost = {
@@ -19,8 +20,16 @@ export type StrapiPost = {
       }
     }
   }
-}
+};
 
-export type StrapiResponse = {
+export type StrapiPosts = {
   posts: [StrapiPost]
-}
+};
+
+export type StrapiPostSlug = {
+  attributes: {
+    slug: string,
+  }
+};
+
+export type StrapiResponsePath = [StrapiPostSlug];
