@@ -15,7 +15,7 @@ export interface StrapiResponsePostType {
 }
 
 export interface StrapiResponseType {
-  data: [StrapiResponsePostType] | null,
+  data: [StrapiResponsePostType] | StrapiResponsePostType | null,
   error?: {
     status: string,
     name: string,

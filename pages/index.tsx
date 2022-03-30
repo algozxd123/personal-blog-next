@@ -10,7 +10,7 @@ const Home: NextPage<PropsArrayType<PostType>> = ({ collection }) => {
         <div className="w-11/12 lg:w-7/12 flex justify-center flex-col">
           {collection.map((post: PostType ) => {
             return (
-              <Post key={post.slug} title={post.title} description={post.content} img={post.img} date={post.date} slug={post.slug}/>
+              <Post key={post.slug} title={post.title} content={post.content} img={post.img} date={post.date} slug={post.slug}/>
             )
           })}
         </div>
