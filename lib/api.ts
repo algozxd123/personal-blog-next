@@ -9,11 +9,10 @@ const sanitizePost = (strapiPost : StrapiResponsePostType) => {
     strapiPost.attributes.slug === undefined){
       throw new Error('Data malformed');
   }
-
   let post : PostType = {
     title: strapiPost.attributes.title,
     content: strapiPost.attributes.content,
-    img: 'http://localhost:1337'+strapiPost.attributes.cover_image.data.attributes.url,
+    img: `http://${process.env.API_HOST}:${process.env.API_PORT}${strapiPost.attributes.cover_image.data.attributes.url}`,
     date: strapiPost.attributes.createdAt.slice(0,10),
     slug: strapiPost.attributes.slug
   };
@@ -21,7 +20,7 @@ const sanitizePost = (strapiPost : StrapiResponsePostType) => {
 };
 
 export async function getPosts(){
-  const res = await fetch('http://localhost:1337/api/posts?populate=cover_image');
+  const res = await fetch(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/posts?populate=cover_image`);
   const json : StrapiResponseType = await res.json();
   
   if(json.error || json.data === null || !Array.isArray(json.data)){
@@ -36,7 +35,7 @@ export async function getPosts(){
 
 export async function getPost(slug: string){
 
-  const res = await fetch(`http://localhost:1337/api/posts/${slug}?populate=cover_image`);
+  const res = await fetch(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/posts/${slug}?populate=cover_image`);
   const json : StrapiResponseType = await res.json();
   
   if(json.error || json.data === null || Array.isArray(json.data)){
@@ -50,7 +49,7 @@ export async function getPost(slug: string){
 };
 
 export async function getPostsPaths(){
-  const res = await fetch('http://localhost:1337/api/posts?fields[0]=slug')
+  const res = await fetch(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/posts?fields[0]=slug`)
   const json : StrapiResponseType = await res.json();
   
   if(json.error || json.data === null || !Array.isArray(json.data)){
