@@ -1,28 +1,33 @@
-import type { NextPage } from "next";
-import Image from "next/image";
-import logo from "../public/logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 import Link from "next/link";
 
-const Nav: NextPage = () => {
+const Nav = () => {
+  const [search, setSearch] = useState('');
   return (
-    <nav className="bg-[#2B2A33] flex justify-center h-12 border border-solid border-x-0 border-t-0 border-blue-500">
-        <div className="w-4/5 flex justify-between items-center">
-          <Link href="/">
-            <a>
-            <div className="flex items-center">
-              <Image src={logo} alt="Logo" height={30} width={35} />
-              <h1 className="ml-2 text-xl">
-                Blog
-              </h1>
-            </div>
-            </a>
-          </Link>
-          <div className="space-x-4">
-            <a href="#" className="hover:text-blue-400 text-blue-300">About</a>
-            <a href="#" className="hover:text-blue-400 text-blue-300">Contact</a>
+    <nav>
+      <div className="flex justify-center">
+        <h1 className="text-5xl my-10 font-serif font-thin">Blog</h1>
+      </div>
+      <div className="border border-solid border-y-1 border-x-0 border-[#292929] flex justify-center">
+        <div className="flex w-11/12 justify-between md:w-4/5 md:justify-around h-10 items-center">
+          <div className="flex justify-between space-x-7">
+            <a href="#" className="text-lg text-[#d5d5d5] hover:text-[#EB5A3E]">Home</a>
+            <a href="#" className="text-lg text-[#d5d5d5] hover:text-[#EB5A3E]">About</a>
+            <a href="#" className="text-lg text-[#d5d5d5] hover:text-[#EB5A3E]">Contact</a>
+          </div>
+          <div className="flex">
+            <input onChange={e => {setSearch(e.currentTarget.value);}} name="search" type="text" className="px-3 py-1.5 bg-gray-900 border border-solid focus:outline-none border-[#EB5A3E]" placeholder="Search..." />
+            <Link href={"/search?"+search}>
+              <a className="h-auto w-9 bg-[#EB5A3E] flex justify-center items-center">
+                <FontAwesomeIcon icon={faSearch} width={17} />
+              </a>
+            </Link>
           </div>
         </div>
-      </nav>
+      </div>
+    </nav>
   );
 };
 

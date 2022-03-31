@@ -3,14 +3,18 @@ import Post from "../components/post";
 import { PostType } from "../types/post";
 import { getPosts } from "../lib/api";
 import { PropsArrayType } from "../types/util";
+import Separator from "../components/separator";
 
 const Home: NextPage<PropsArrayType<PostType>> = ({ collection }) => {
   return (
-      <div className="flex justify-center">
+      <div className="mt-7 flex justify-center">
         <div className="w-11/12 lg:w-7/12 flex justify-center flex-col">
-          {collection.map((post: PostType ) => {
+          {collection.map((post: PostType, i) => {
             return (
-              <Post key={post.slug} title={post.title} content={post.content} img={post.img} date={post.date} slug={post.slug}/>
+              <div key={post.slug}>
+              <Post title={post.title} content={post.content} img={post.img} date={post.date} slug={post.slug}/>
+              {(collection[i+1]) ? <Separator /> : <></>}
+              </div>
             )
           })}
         </div>
