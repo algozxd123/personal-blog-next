@@ -1,7 +1,11 @@
 import type { NextPage } from "next";
+import Post from "../components/post";
 import { PostType } from "../types/post";
 import { getPosts } from "../lib/api";
-import { PropsArrayType } from "../types/util";
+import { PropsArrayType, SearchQuery } from "../types/util";
+import Separator from "../components/separator";
+import { Context } from "react";
+import { GetServerSideProps } from "next";
 import PostList from "../components/postList";
 
 const Home: NextPage<PropsArrayType<PostType>> = ({ collection }) => {
@@ -14,9 +18,9 @@ const Home: NextPage<PropsArrayType<PostType>> = ({ collection }) => {
   );
 };
 
-export async function getStaticProps() {
-
-  const posts : PostType[] = await getPosts('');
+export const getServerSideProps: GetServerSideProps = async ({query}) => {
+  if(typeof query.q !== 'string') query.q = ''; 
+  const posts : PostType[] = await getPosts(query.q);
   return {
     props: {
       collection: posts,
