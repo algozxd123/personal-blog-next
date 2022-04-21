@@ -3,6 +3,7 @@ import { PostType } from "../types/post";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
+import Date from "./date";
 
 const Post = (props : PostType) => {
   return (
@@ -21,10 +22,7 @@ const Post = (props : PostType) => {
               <h1 className="text-4xl font-serif font-thin">{props.title}</h1>
             </a>
           </Link>
-          <div className="flex items-center">
-            <FontAwesomeIcon icon={faCalendarDays} height={20} color="#EB5A3E" />
-            <p className="text-[#7a7a7a] ml-2">{props.date}</p>
-          </div>
+          <Date date={props.date}/>
           <p className="line-clamp-3 text-ellipsis">{props.content}</p>
         </div>
         <Link href={'/posts/' + props.slug}>

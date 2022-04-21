@@ -1,12 +1,15 @@
 import { PostType } from "../types/post";
 import { PropsArrayType } from "../types/util";
+import NotFound from "./notFound";
 import Post from "./post";
 import Separator from "./separator";
 
 const PostList = ({collection}: PropsArrayType<PostType>) => {
   return (
     <>
-      {collection.map((post: PostType, i) => {
+      {
+      (collection.length > 0) ? 
+      collection.map((post: PostType, i) => {
         return (<div key={post.slug}>
           <Post
             title={post.title}
@@ -17,7 +20,8 @@ const PostList = ({collection}: PropsArrayType<PostType>) => {
           />
           {collection[i + 1] ? <Separator /> : <></>}
         </div>);
-      })}
+      }) : <NotFound/>
+      }
     </>
   );
 };

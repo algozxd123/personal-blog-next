@@ -5,3 +5,7 @@ export interface PostType{
   date: string,
   slug: string
 };
+
+export interface PostDateType{
+  date: string
+}
