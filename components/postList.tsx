@@ -1,6 +1,6 @@
 import { PostType } from "../types/post";
 import { PropsArrayType } from "../types/util";
-import NotFound from "./notFound";
+import NoResults from "./noResults";
 import Post from "./post";
 import Separator from "./separator";
 
@@ -20,7 +20,7 @@ const PostList = ({collection}: PropsArrayType<PostType>) => {
           />
           {collection[i + 1] ? <Separator /> : <></>}
         </div>);
-      }) : <NotFound/>
+      }) : <NoResults/>
       }
     </>
   );
