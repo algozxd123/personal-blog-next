@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { PostType } from "../types/post";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import Date from "./date";
 
 const Post = (props : PostType) => {

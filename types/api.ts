@@ -11,8 +11,8 @@ export interface StrapiResponsePostType {
         }
       }
     }
-  };
-}
+  }
+};
 
 export interface StrapiResponseType {
   data: [StrapiResponsePostType] | StrapiResponsePostType | null,
