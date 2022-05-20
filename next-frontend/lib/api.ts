@@ -1,5 +1,6 @@
 import { PostType } from "../types/post";
-import { StrapiResponseType, StrapiResponsePostType, isPost, isPostArray, isPostSlugArray } from "../types/api";
+import { StrapiResponseType, StrapiResponsePostType, isPost, isPostArray, isPostSlugArray, isAbout } from "../types/api";
+import { AboutType } from "../types/singles";
 
 const sanitizePost = (strapiPost : StrapiResponsePostType) => {
   let placeholder = false;
@@ -65,7 +66,7 @@ export async function getPost(slug: string){
 };
 
 export async function getPostsPaths(){
-  const res = await fetch(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/posts?fields[0]=slug`)
+  const res = await fetch(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/posts?fields[0]=slug`);
   const json : StrapiResponseType = await res.json();
   
   if(json.error){
@@ -79,5 +80,26 @@ export async function getPostsPaths(){
     return postsPaths;
   }else{
     throw new Error('Slug data malformed');
+  }
+};
+
+export async function getAbout(){
+  const res = await fetch(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/about?populate=image`)
+  const json : StrapiResponseType = await res.json();
+  
+  if(json.error){
+    console.error(json.error);
+    throw new Error('Failed to fetch API');
+  }
+
+  if(isAbout(json.data)){
+    const aboutData : AboutType = {
+      text: json.data.attributes.text,
+      image: `http://${process.env.API_HOST}:${process.env.API_PORT}${json.data.attributes.image.data.attributes.url}`
+    };
+
+    return aboutData;
+  }else{
+    throw new Error('About data malformed');
   }
 }

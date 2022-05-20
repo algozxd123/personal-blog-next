@@ -14,7 +14,7 @@ export interface StrapiResponsePostType {
   }
 };
 
-type StrapiResponseBodyType = [StrapiResponsePostType] | StrapiResponsePostType | [StrapiResponsePostSlugType] | null;
+type StrapiResponseBodyType = [StrapiResponsePostType] | StrapiResponsePostType | [StrapiResponsePostSlugType] | StrapiResponseAboutType | null;
 
 export interface StrapiResponseType {
   data: StrapiResponseBodyType,
@@ -32,7 +32,18 @@ export interface StrapiResponsePostSlugType {
   }
 };
 
-
+export interface StrapiResponseAboutType {
+  attributes: {
+    text: string,
+    image: {
+      data: {
+        attributes: {
+          url: string
+        }
+      }
+    }
+  }
+};
 
 export const isPost = (data : StrapiResponseBodyType): data is StrapiResponsePostType => {
   let postData = data as StrapiResponsePostType;
@@ -76,4 +87,16 @@ export const isPostSlugArray = (data : StrapiResponseBodyType): data is [StrapiR
   }else{
     return false;
   }
+};
+
+export const isAbout = (data : StrapiResponseBodyType): data is StrapiResponseAboutType => {
+
+    let aboutData = data as StrapiResponseAboutType;
+
+    if(aboutData.attributes.text === undefined ||
+       aboutData.attributes.image.data.attributes.url === undefined){
+        return false;
+    }else{
+      return true;
+    }
 };
