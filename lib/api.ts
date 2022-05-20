@@ -13,7 +13,7 @@ const sanitizePost = (strapiPost : StrapiResponsePostType) => {
   let placeholder = false;
   //If image was deleted from the strapi server, the response will have the cover_image property but the contents of data will be null
   if(strapiPost.attributes.cover_image.data == undefined){
-    strapiPost.attributes.cover_image.data = {attributes: {url: 'http://via.placeholder.com/200'}};
+    strapiPost.attributes.cover_image.data = {attributes: {url: '/700.png'}};
     placeholder = true;
   }
 
