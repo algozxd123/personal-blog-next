@@ -1,21 +1,13 @@
 import { PostType } from "../types/post";
-import { StrapiResponseType, StrapiResponsePostType } from "../types/api";
+import { StrapiResponseType, StrapiResponsePostType, isPost, isPostArray, isPostSlugArray } from "../types/api";
 
 const sanitizePost = (strapiPost : StrapiResponsePostType) => {
-  if(strapiPost.attributes.title === undefined ||
-    strapiPost.attributes.content == undefined ||
-    strapiPost.attributes.cover_image == undefined ||
-    strapiPost.attributes.createdAt == undefined ||
-    strapiPost.attributes.slug == undefined){
-      throw new Error('Data malformed');
-  }
-
   let placeholder = false;
   //If image was deleted from the strapi server, the response will have the cover_image property but the contents of data will be null
   if(strapiPost.attributes.cover_image.data == undefined){
     strapiPost.attributes.cover_image.data = {attributes: {url: '/700.png'}};
     placeholder = true;
-  }
+  };
 
   let post : PostType = {
     title: strapiPost.attributes.title,
@@ -39,15 +31,18 @@ export async function getPosts(search: string){
   const res = await fetch(url);
   const json : StrapiResponseType = await res.json();
   
-  if(json.error || json.data === null || !Array.isArray(json.data)){
+  if(json.error){
     console.error(json.error);
-    console.log(json);
     throw new Error('Failed to fetch API');
   }
 
-  const posts: PostType[] = json.data.map(sanitizePost);
+  if(isPostArray(json.data)){
+    const posts: PostType[] = json.data.map(sanitizePost);
 
-  return posts;
+    return posts;
+  }else{
+    throw new Error('Post data malformed');
+  }
 };
 
 export async function getPost(slug: string){
@@ -55,26 +50,34 @@ export async function getPost(slug: string){
   const res = await fetch(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/posts/${slug}?populate=cover_image`);
   const json : StrapiResponseType = await res.json();
   
-  if(json.error || json.data === null || Array.isArray(json.data)){
+  if(json.error){
     console.error(json.error);
     throw new Error('Failed to fetch API');
   }
-  
-  const posts: PostType = sanitizePost(json.data);
 
-  return posts;
+  if(isPost(json.data)){
+    const posts: PostType = sanitizePost(json.data);
+
+    return posts;
+  }else{
+    throw new Error('Post data malformed');
+  }
 };
 
 export async function getPostsPaths(){
   const res = await fetch(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/posts?fields[0]=slug`)
   const json : StrapiResponseType = await res.json();
   
-  if(json.error || json.data === null || !Array.isArray(json.data)){
+  if(json.error){
     console.error(json.error);
     throw new Error('Failed to fetch API');
   }
 
-  const postsPaths: string[] = json.data.map((post) => {return post.attributes.slug || ''});
+  if(isPostSlugArray(json.data)){
+    const postsPaths: string[] = json.data.map((post) => {return post.attributes.slug || ''});
 
-  return postsPaths;
+    return postsPaths;
+  }else{
+    throw new Error('Slug data malformed');
+  }
 }

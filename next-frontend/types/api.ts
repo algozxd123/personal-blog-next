@@ -1,10 +1,10 @@
 export interface StrapiResponsePostType {
   attributes: {
-    title?: string,
-    content?: string,
-    createdAt?: string,
-    slug?: string,
-    cover_image?: {
+    title: string,
+    content: string,
+    createdAt: string,
+    slug: string,
+    cover_image: {
       data: {
         attributes: {
           url: string
@@ -14,8 +14,10 @@ export interface StrapiResponsePostType {
   }
 };
 
+type StrapiResponseBodyType = [StrapiResponsePostType] | StrapiResponsePostType | [StrapiResponsePostSlugType] | null;
+
 export interface StrapiResponseType {
-  data: [StrapiResponsePostType] | StrapiResponsePostType | null,
+  data: StrapiResponseBodyType,
   error?: {
     status: string,
     name: string,
@@ -23,3 +25,55 @@ export interface StrapiResponseType {
     details: {}
   }
 }
+
+export interface StrapiResponsePostSlugType {
+  attributes: {
+    slug: string,
+  }
+};
+
+
+
+export const isPost = (data : StrapiResponseBodyType): data is StrapiResponsePostType => {
+  let postData = data as StrapiResponsePostType;
+
+  if(postData.attributes.title === undefined ||
+    postData.attributes.content == undefined ||
+    postData.attributes.cover_image == undefined ||
+    postData.attributes.createdAt == undefined ||
+    postData.attributes.slug == undefined){
+      return false;
+  }else{
+    return true;
+  }
+};
+
+export const isPostArray = (data : StrapiResponseBodyType): data is [StrapiResponsePostType] => {
+  let postArrayData = data as [StrapiResponsePostType];
+
+  if(postArrayData.every(isPost)){
+    return true;
+  }else{
+    return false;
+  }
+};
+
+export const isPostSlug = (data : any): data is StrapiResponsePostSlugType => {
+  let postData = data as StrapiResponsePostSlugType;
+
+  if(postData.attributes.slug === undefined){
+      return false;
+  }else{
+    return true;
+  }
+};
+
+export const isPostSlugArray = (data : StrapiResponseBodyType): data is [StrapiResponsePostSlugType] => {
+  let postArrayData = data as [StrapiResponsePostSlugType];
+
+  if(postArrayData.every(isPostSlug)){
+    return true;
+  }else{
+    return false;
+  }
+};
