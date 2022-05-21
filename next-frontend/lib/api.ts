@@ -1,6 +1,6 @@
 import { PostType } from "../types/post";
-import { StrapiResponseType, StrapiResponsePostType, isPost, isPostArray, isPostSlugArray, isAbout } from "../types/api";
-import { AboutType } from "../types/singles";
+import { StrapiResponseType, StrapiResponsePostType, isPost, isPostArray, isPostSlugArray, isAbout, isContact } from "../types/api";
+import { AboutType, ContactType } from "../types/singles";
 
 const sanitizePost = (strapiPost : StrapiResponsePostType) => {
   let placeholder = false;
@@ -102,4 +102,24 @@ export async function getAbout(){
   }else{
     throw new Error('About data malformed');
   }
-}
+};
+
+export async function getContact(){
+  const res = await fetch(`http://${process.env.API_HOST}:${process.env.API_PORT}/api/contact?populate=image`)
+  const json : StrapiResponseType = await res.json();
+  if(json.error){
+    console.error(json.error);
+    throw new Error('Failed to fetch API');
+  }
+
+  if(isContact(json.data)){
+    const contactData : ContactType = {
+      text: json.data.attributes.text,
+      image: `http://${process.env.API_HOST}:${process.env.API_PORT}${json.data.attributes.image.data.attributes.url}`
+    };
+
+    return contactData;
+  }else{
+    throw new Error('Contact data malformed');
+  }
+};
